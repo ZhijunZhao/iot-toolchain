@@ -1,0 +1,42 @@
+{
+    "name": "iot-toolchain",
+    "displayName": "IoT Toolchain",
+    "description": "support IoT development, including building source code and deploying to devcies, with docker based toolchain solution",
+    "version": "0.0.1",
+    "publisher": "zhijunzhao",
+    "engines": {
+        "vscode": "^1.5.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:extension.build",
+        "onCommand:extension.deploy"
+    ],
+    "main": "./extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.build",
+                "title": "IoT Toolchain: Build"
+            },
+            {
+                "command": "extension.deploy",
+                "title": "IoT Toolchain: Deploy"
+            }
+        ]
+    },
+    "scripts": {
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "typescript": "^2.0.3",
+        "vscode": "^1.0.0",
+        "mocha": "^2.3.3",
+        "eslint": "^3.6.0",
+        "@types/node": "^6.0.40",
+        "@types/mocha": "^2.2.32"
+    }
+}
