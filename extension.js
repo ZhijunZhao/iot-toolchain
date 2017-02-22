@@ -42,7 +42,8 @@ function cloneDockerRepo(context) {
     if (fs.existsSync(repoPath)) {
         console.log('repo already exists');
         try {
-            var log = execSync('cd ' + repoPath + ' && git pull');
+            var cdCmd = os.platform() === 'win32' ? 'cd /d ' : 'cd ';
+            var log = execSync(cdCmd + repoPath + ' && git pull');
             console.log(log);
         } catch (e) {
             console.log(e);
