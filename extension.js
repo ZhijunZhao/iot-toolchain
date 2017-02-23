@@ -3,6 +3,7 @@ var execSync = require('child_process').execSync;
 var fs = require('fs');
 var path = require('path');
 var os = require('os');
+var biHelper = require('./biHelper.js');
 
 function localExecCmd(cmd, args, outputChannel, cb) {
     try {
@@ -63,6 +64,9 @@ function activate(context) {
     console.log('Congratulations, your extension "azure-iot-development" is now active!');
 
     var outputChannel = vscode.window.createOutputChannel("Azure IoT build");
+
+    var properties = {};
+
     let build = vscode.commands.registerCommand('extension.build', function () {
         cloneDockerRepo(context);
 
@@ -87,10 +91,15 @@ function activate(context) {
             } else {
                 localExecCmd('bash', [mainPath, 'build', '--device', config.device, '--workingdir', workingdir, '--builddir', builddirname], outputChannel);
             }
+
+            properties.device = config.device;
         } else {
             vscode.window.showErrorMessage('config.json does not exist.');
             console.log('config file does not exist');
         }
+
+        // send bi data
+        biHelper.trackEvent('0009ad35-7479-4181-9f8e-7c709f5802c9', 'build', properties);
     });
 
     let deploy = vscode.commands.registerCommand('extension.deploy', function () {
@@ -116,10 +125,15 @@ function activate(context) {
                     '--deviceip', config.deviceip, '--username', config.username, '--password', config.password,
                     '--srcpath', srcpath, '--destdir', destdir], outputChannel);
             }
+
+            properties.device = config.device;
         } else {
             vscode.window.showErrorMessage('config.json does not exist.');
             console.log('config file does not exist');
         }
+
+        // send bi data
+        biHelper.trackEvent('0009ad35-7479-4181-9f8e-7c709f5802c9', 'build', properties);        
     });
 
     context.subscriptions.push(build);
